@@ -106,15 +106,6 @@ const Contact = () => {
     script.textContent = JSON.stringify(faqSchema);
     document.head.appendChild(script);
 
-    // Load Typeform embed script
-    const tfScript = document.createElement('script');
-    tfScript.src = '//embed.typeform.com/next/embed.js';
-    tfScript.async = true;
-    document.body.appendChild(tfScript);
-
-    return () => {
-      script.remove();
-      tfScript.remove();
     };
   }, [location.state?.scrollToForm]);
 
@@ -204,9 +195,11 @@ const Contact = () => {
                 <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Message us</p>
                 <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
                 <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
-                <div
-                  data-tf-live="sqMOxRdR"
-                  style={{ width: "100%", minHeight: "400px" }}
+                <iframe
+                  src="https://form.typeform.com/to/sqMOxRdR"
+                  style={{ width: "100%", minHeight: "500px", border: "none", borderRadius: "12px" }}
+                  title="Contact Form"
+                  allow="camera; microphone; autoplay; encrypted-media;"
                 />
               </motion.div>
 
