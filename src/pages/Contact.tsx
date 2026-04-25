@@ -114,7 +114,6 @@ const Contact = () => {
     // Load Typeform embed script
     const typeformScript = document.createElement('script');
     typeformScript.src = 'https://embed.typeform.com/next/embed.js';
-    typeformScript.async = true;
     document.body.appendChild(typeformScript);
 
     return () => script.remove();
@@ -206,14 +205,6 @@ const Contact = () => {
               <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Message us</p>
               <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
               <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
-              
-              {/* Typeform Embed */}
-              <div
-                data-tf-live="b6HUYWLT"
-                style={{
-                  width: '100%',
-                }}
-              />
             </motion.div>
 
             <motion.div
@@ -223,47 +214,60 @@ const Contact = () => {
               transition={{ delay: 0.1 }}
               className="space-y-8"
             >
-              <div>
-                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Contact info</p>
-                <h2 className="text-2xl font-extrabold text-foreground mb-2">Contact Information</h2>
-                <p className="text-muted-foreground">Prefer to reach out directly? Here's how.</p>
-              </div>
-              <div className="space-y-5">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
-                    <Mail className="w-5 h-5 text-purple-deep" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground text-sm">Email</p>
-                    <p className="text-muted-foreground text-sm">laminey2059@gmail.com</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
-                    <Phone className="w-5 h-5 text-purple-deep" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground text-sm">Phone</p>
-                    <p className="text-muted-foreground text-sm">+45 12 34 56 78</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
-                    <MapPin className="w-5 h-5 text-purple-deep" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground text-sm">Office</p>
-                    <p className="text-muted-foreground text-sm">Denmark, DK</p>
-                  </div>
-                </div>
-              </div>
-
+              <div
+                data-tf-live="pkJ75SRW"
+                style={{ minHeight: "500px" }}
+              ></div>
+              
               <div className="bg-card border border-border rounded-2xl p-6">
                 <p className="text-sm text-foreground font-semibold mb-1">Estimated response time</p>
                 <p className="text-sm text-muted-foreground">We respond within 24 hours on business days. It can be longer if our client list is long.</p>
               </div>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* Contact Info Section */}
+      <section className="py-14 md:py-20 bg-muted/50 border-t border-border">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Contact info</p>
+            <h2 className="text-2xl font-extrabold text-foreground mb-8">Contact Information</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
+                  <Mail className="w-5 h-5 text-purple-deep" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground text-sm">Email</p>
+                  <p className="text-muted-foreground text-sm">laminey2059@gmail.com</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
+                  <Phone className="w-5 h-5 text-purple-deep" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground text-sm">Phone</p>
+                  <p className="text-muted-foreground text-sm">+45 12 34 56 78</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
+                  <MapPin className="w-5 h-5 text-purple-deep" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground text-sm">Office</p>
+                  <p className="text-muted-foreground text-sm">Denmark, DK</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
