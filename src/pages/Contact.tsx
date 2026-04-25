@@ -77,6 +77,7 @@ const faqs = [
 ];
 
 const Contact = () => {
+  const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
   const { data: fiveStarCount = 0 } = useTrustpilotFiveStarCount();
@@ -109,6 +110,12 @@ const Contact = () => {
     script.type = 'application/ld+json';
     script.textContent = JSON.stringify(faqSchema);
     document.head.appendChild(script);
+
+    // Load Typeform embed script
+    const typeformScript = document.createElement('script');
+    typeformScript.src = 'https://embed.typeform.com/next/embed.js';
+    typeformScript.async = true;
+    document.body.appendChild(typeformScript);
 
     return () => script.remove();
   }, [location.state?.scrollToForm]);
@@ -199,13 +206,13 @@ const Contact = () => {
               <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Message us</p>
               <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
               <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
-              <iframe
-                src="https://form.typeform.com/to/QpqjP3tg"
-                width="100%"
-                height="500"
-                frameBorder="0"
-                title="Contact Form"
-                style={{ border: 'none', borderRadius: '8px' }}
+              
+              {/* Typeform Embed */}
+              <div
+                data-tf-live="b6HUYWLT"
+                style={{
+                  width: '100%',
+                }}
               />
             </motion.div>
 
