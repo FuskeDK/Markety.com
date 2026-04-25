@@ -2,13 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion, useInView } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   Accordion,
   AccordionContent,
@@ -115,9 +110,17 @@ const Contact = () => {
   }, [location.state?.scrollToForm]);
 
   useEffect(() => {
+    // Load Typeform embed script
     const script = document.createElement('script');
-    script.src = 'https://embed.typeform.com/next/embed.js';
+    script.src = 'https://embed.typeform.com/embed.js';
+    script.async = true;
     document.body.appendChild(script);
+
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
   }, []);
 
   return (
@@ -125,6 +128,7 @@ const Contact = () => {
       <main className="min-h-screen bg-background">
         <Navbar />
 
+        {/* Hero Section */}
         <section className="relative pt-28 pb-12 md:pt-40 md:pb-20 overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[580px] pointer-events-none" style={{
             backgroundImage: `
@@ -155,6 +159,7 @@ const Contact = () => {
               </p>
             </motion.div>
 
+            {/* Stats */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -192,6 +197,7 @@ const Contact = () => {
           </div>
         </section>
 
+        {/* Contact Form Section */}
         <section id="contact-form" className="py-14 md:py-20 bg-muted/50 border-t border-border">
           <div className="container mx-auto px-4 max-w-5xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
@@ -203,10 +209,12 @@ const Contact = () => {
                 <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Message us</p>
                 <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
                 <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
+                
+                {/* Typeform Embed */}
                 <div 
-                  data-tf-live="FtVq9YgA"
-                  style={{ width: '100%' }}
-                />
+                  data-tf-live="01ARZ3NDEKTSV4RRFFQ69G69G77"
+                  style={{ width: '100%', height: '500px' }}
+                ></div>
               </motion.div>
 
               <motion.div
@@ -260,6 +268,7 @@ const Contact = () => {
           </div>
         </section>
 
+        {/* FAQ Section */}
         <section className="py-14 md:py-20 border-t border-border">
           <div className="container mx-auto px-4 max-w-5xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
