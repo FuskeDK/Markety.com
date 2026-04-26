@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import {
   Accordion,
@@ -193,16 +194,14 @@ const Contact = () => {
                 <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
                 <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
                 
-                {/* Typeform Embed */}
-                <div className="typeform-embed-container">
-                  <iframe
-                    id="typeform-full"
+                <div className="w-full">
+                  <iframe 
+                    src="https://form.typeform.com/to/pJemRyDK"
                     width="100%"
                     height="500"
                     frameBorder="0"
-                    allow="camera; microphone; autoplay; encrypted-media;"
-                    src="https://form.typeform.com/to/pJemRyDK"
-                  ></iframe>
+                    style={{ borderRadius: '12px' }}
+                  />
                 </div>
               </motion.div>
 
