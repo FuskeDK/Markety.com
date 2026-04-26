@@ -1,9 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { motion, useInView } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import {
   Accordion,
@@ -15,6 +13,7 @@ import { useTrustpilotFiveStarCount } from "@/hooks/useTrustpilotStats";
 import { useLeadsCount } from "@/hooks/useLeadsCount";
 import { useCompaniesCount } from "@/hooks/useCompaniesCount";
 import { setSeoMeta } from "@/lib/seo";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 function CountUpNumber({
   end,
@@ -194,15 +193,14 @@ const Contact = () => {
                 <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
                 <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
                 
-                <div className="w-full">
-                  <iframe 
-                    src="https://form.typeform.com/to/pJemRyDK"
-                    width="100%"
-                    height="500"
-                    frameBorder="0"
-                    style={{ borderRadius: '12px' }}
-                  />
-                </div>
+                <iframe 
+                  src="https://form.typeform.com/to/jC6jwtgn" 
+                  width="100%" 
+                  height="500" 
+                  frameBorder="0" 
+                  allow="camera; microphone; autoplay; encrypted-media;"
+                  title="Contact Form"
+                ></iframe>
               </motion.div>
 
               <motion.div
