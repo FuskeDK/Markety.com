@@ -75,8 +75,8 @@ const faqs = [
 ];
 
 const Contact = () => {
-  const location = useLocation();
   const { toast } = useToast();
+  const location = useLocation();
   const { data: fiveStarCount = 0 } = useTrustpilotFiveStarCount();
   const { data: leadsCount = 0 } = useLeadsCount();
   const { data: companiesCount = 0 } = useCompaniesCount();
@@ -108,21 +108,17 @@ const Contact = () => {
     script.textContent = JSON.stringify(faqSchema);
     document.head.appendChild(script);
 
-    return () => script.remove();
-  }, [location.state?.scrollToForm]);
-
-  useEffect(() => {
     // Load Typeform embed script
-    const script = document.createElement('script');
-    script.src = 'https://embed.typeform.com/next/embed.js';
-    script.async = true;
-    document.body.appendChild(script);
+    const typeformScript = document.createElement('script');
+    typeformScript.src = 'https://embed.typeform.com/embed.js';
+    typeformScript.async = true;
+    document.body.appendChild(typeformScript);
+
     return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
+      script.remove();
+      typeformScript.remove();
     };
-  }, []);
+  }, [location.state?.scrollToForm]);
 
   return (
     <>
@@ -210,8 +206,8 @@ const Contact = () => {
                 
                 {/* Typeform Embed */}
                 <div
-                  data-tf-live="BGB8V09l"
-                  style={{ width: '100%', height: '500px' }}
+                  data-tf-live="gRxqsJBU"
+                  style={{ width: '100%', height: '600px' }}
                 ></div>
               </motion.div>
 
