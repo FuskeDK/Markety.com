@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import {
   Accordion,
@@ -26,7 +27,7 @@ function CountUpNumber({
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const [count, setCount] = useState(0);
+  const [count, setCount] = React.useState(0);
 
   useEffect(() => {
     if (!isInView) return;
@@ -106,7 +107,16 @@ const Contact = () => {
     script.textContent = JSON.stringify(faqSchema);
     document.head.appendChild(script);
 
-    return () => script.remove();
+    // Load Typeform embed script
+    const typeformScript = document.createElement('script');
+    typeformScript.src = 'https://embed.typeform.com/embed.js';
+    typeformScript.async = true;
+    document.body.appendChild(typeformScript);
+
+    return () => {
+      script.remove();
+      if (typeformScript.parentNode) typeformScript.parentNode.removeChild(typeformScript);
+    };
   }, [location.state?.scrollToForm]);
 
   return (
@@ -193,14 +203,7 @@ const Contact = () => {
                 <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
                 <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
                 
-                <iframe 
-                  src="https://form.typeform.com/to/jC6jwtgn" 
-                  width="100%" 
-                  height="500" 
-                  frameBorder="0" 
-                  allow="camera; microphone; autoplay; encrypted-media;"
-                  title="Contact Form"
-                ></iframe>
+                <div className="typeform-embed" data-url="https://form.typeform.com/to/owOX8Vcn" style={{ width: '100%', height: '500px' }} />
               </motion.div>
 
               <motion.div
