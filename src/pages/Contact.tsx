@@ -3,7 +3,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -77,8 +79,7 @@ const faqs = [
 ];
 
 const Contact = () => {
-  const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { data: fiveStarCount = 0 } = useTrustpilotFiveStarCount();
@@ -114,15 +115,6 @@ const Contact = () => {
 
     return () => script.remove();
   }, [location.state?.scrollToForm]);
-
-  const handleTypeformSubmit = () => {
-    toast({
-      title: "Message sent",
-      description:
-        "We respond within 24 hours on business days. It can be longer if our client list is long.",
-    });
-    navigate("/contact/sent");
-  };
 
   return (
     <>
@@ -211,17 +203,13 @@ const Contact = () => {
               <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
               <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
               
-              {}
-              <div style={{ 
-                marginBottom: '2rem',
-                borderRadius: '0.5rem',
-                overflow: 'hidden'
-              }}>
+              {/* Typeform Embed */}
+              <div style={{ width: '100%', height: '600px' }}>
                 <iframe
-                  src="https://form.typeform.com/to/owOX8Vcn?embed=drawer"
+                  src="https://form.typeform.com/to/R9SQzxQg?embed=drawer"
                   width="100%"
-                  height="500"
-                  frameBorder="0"
+                  height="100%"
+                  style={{ border: 'none', borderRadius: '8px' }}
                   title="Contact Form"
                 />
               </div>
