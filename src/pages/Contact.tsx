@@ -2,9 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion, useInView } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import {
@@ -12,7 +9,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "@/components/accordion";
 import { useTrustpilotFiveStarCount } from "@/hooks/useTrustpilotStats";
 import { useLeadsCount } from "@/hooks/useLeadsCount";
 import { useCompaniesCount } from "@/hooks/useCompaniesCount";
@@ -77,7 +74,6 @@ const faqs = [
 ];
 
 const Contact = () => {
-  const { toast } = useToast();
   const location = useLocation();
   const { data: fiveStarCount = 0 } = useTrustpilotFiveStarCount();
   const { data: leadsCount = 0 } = useLeadsCount();
@@ -196,15 +192,14 @@ const Contact = () => {
                 <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Message us</p>
                 <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
                 <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
-                
-                {/* Typeform Embed */}
-                <div style={{ width: '100%' }}>
-                  <iframe
-                    src="https://form.typeform.com/to/Ee1v0YKd"
-                    style={{ width: '100%', height: '600px', border: 'none', borderRadius: '8px' }}
-                    title="Contact Form"
-                  />
-                </div>
+                <iframe
+                  src="https://form.typeform.com/to/YunuKTVZ"
+                  width="100%"
+                  height="500"
+                  frameBorder="0"
+                  title="Contact Form"
+                  style={{ borderRadius: "8px" }}
+                />
               </motion.div>
 
               <motion.div
