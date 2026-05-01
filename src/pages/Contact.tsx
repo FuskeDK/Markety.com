@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion, useInView } from "framer-motion";
@@ -26,7 +26,7 @@ function CountUpNumber({
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useRef(0);
 
   useEffect(() => {
     if (!isInView) return;
@@ -36,14 +36,14 @@ function CountUpNumber({
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(end * eased);
+      count.current = end * eased;
       if (progress < 1) rafId = requestAnimationFrame(animate);
     };
     rafId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafId);
   }, [isInView, end, duration]);
 
-  return <span ref={ref}>{format(count)}</span>;
+  return <span ref={ref}>{format(count.current)}</span>;
 }
 
 const faqs = [
@@ -192,14 +192,6 @@ const Contact = () => {
                 <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Message us</p>
                 <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
                 <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
-                <iframe
-                  src="https://form.typeform.com/to/YunuKTVZ"
-                  width="100%"
-                  height="500"
-                  frameBorder="0"
-                  title="Contact Form"
-                  style={{ borderRadius: "8px" }}
-                />
               </motion.div>
 
               <motion.div
@@ -207,14 +199,35 @@ const Contact = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="space-y-8"
+                className="w-full"
               >
-                <div>
-                  <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Contact info</p>
-                  <h2 className="text-2xl font-extrabold text-foreground mb-2">Contact Information</h2>
-                  <p className="text-muted-foreground">Prefer to reach out directly? Here's how.</p>
-                </div>
-                <div className="space-y-5">
+                <iframe
+                  src="https://form.typeform.com/to/sqMOxRdR"
+                  style={{
+                    width: "100%",
+                    height: "600px",
+                    border: "none",
+                    borderRadius: "0.5rem",
+                  }}
+                  title="Contact Form"
+                />
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-14 md:py-20 border-t border-border bg-muted/50">
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Contact info</p>
+                <h2 className="text-2xl font-extrabold text-foreground mb-2">Contact Information</h2>
+                <p className="text-muted-foreground">Prefer to reach out directly? Here's how.</p>
+                <div className="space-y-5 mt-8">
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
                       <Mail className="w-5 h-5 text-purple-deep" />
@@ -244,7 +257,7 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <div className="bg-card border border-border rounded-2xl p-6">
+                <div className="bg-card border border-border rounded-2xl p-6 mt-8">
                   <p className="text-sm text-foreground font-semibold mb-1">Estimated response time</p>
                   <p className="text-sm text-muted-foreground">We respond within 24 hours on business days. It can be longer if our client list is long.</p>
                 </div>
@@ -287,7 +300,6 @@ const Contact = () => {
             </div>
           </div>
         </section>
-
       </main>
       <Footer />
     </>
