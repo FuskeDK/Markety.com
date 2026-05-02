@@ -3,9 +3,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Accordion,
   AccordionContent,
@@ -76,7 +77,6 @@ const faqs = [
 ];
 
 const Contact = () => {
-  const { toast } = useToast();
   const location = useLocation();
   const { data: fiveStarCount = 0 } = useTrustpilotFiveStarCount();
   const { data: leadsCount = 0 } = useLeadsCount();
@@ -112,16 +112,13 @@ const Contact = () => {
     return () => script.remove();
   }, [location.state?.scrollToForm]);
 
+  // Load Typeform embed script
   useEffect(() => {
-    // Load Typeform embed script
     const script = document.createElement('script');
-    script.src = '//embed.typeform.com/next/embed.js';
+    script.src = 'https://embed.typeform.com/next/embed.js';
     script.async = true;
     document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    return () => document.body.removeChild(script);
   }, []);
 
   return (
@@ -208,8 +205,11 @@ const Contact = () => {
                 <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
                 <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
                 
-                {/* Typeform embed */}
-                <div data-tf-live="sqMOxRdR"></div>
+                {/* Typeform Embed */}
+                <div
+                  data-tf-live="https://form.typeform.com/to/sqMOxRdR"
+                  style={{ width: '100%', height: '500px' }}
+                />
               </motion.div>
 
               <motion.div
