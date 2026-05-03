@@ -3,10 +3,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Accordion,
   AccordionContent,
@@ -77,18 +76,14 @@ const faqs = [
 ];
 
 const Contact = () => {
-  const location = useLocation();
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const { data: fiveStarCount = 0 } = useTrustpilotFiveStarCount();
   const { data: leadsCount = 0 } = useLeadsCount();
   const { data: companiesCount = 0 } = useCompaniesCount();
   const happyClients = Math.round(companiesCount * 0.9);
 
   useEffect(() => {
-    if (location.state?.scrollToForm) {
-      setTimeout(() => {
-        document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
-      }, 400);
-    }
     setSeoMeta("contact");
 
     const faqSchema = {
@@ -110,15 +105,6 @@ const Contact = () => {
     document.head.appendChild(script);
 
     return () => script.remove();
-  }, [location.state?.scrollToForm]);
-
-  // Load Typeform embed script
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://embed.typeform.com/next/embed.js';
-    script.async = true;
-    document.body.appendChild(script);
-    return () => document.body.removeChild(script);
   }, []);
 
   return (
@@ -126,177 +112,189 @@ const Contact = () => {
       <main className="min-h-screen bg-background">
         <Navbar />
 
-        <section className="relative pt-28 pb-12 md:pt-40 md:pb-20 overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[580px] pointer-events-none" style={{
-            backgroundImage: `
-              linear-gradient(to right, hsl(var(--border) / 0.9) 1px, transparent 1px),
-              linear-gradient(to bottom, hsl(var(--border) / 0.9) 1px, transparent 1px)
-            `,
-            backgroundSize: '64px 64px',
-            maskImage: 'radial-gradient(ellipse 58% 55% at 50% 48%, transparent 0%, transparent 58%, black 88%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 58% 55% at 50% 48%, transparent 0%, transparent 58%, black 88%)',
-          }} />
-          <div className="absolute top-0 left-0 right-0 h-[580px] pointer-events-none" style={{
-            background: `linear-gradient(to bottom, transparent 65%, hsl(var(--background)) 100%)`
-          }} />
+      {}
+      <section className="relative pt-28 pb-12 md:pt-40 md:pb-20 overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-[580px] pointer-events-none" style={{
+          backgroundImage: `
+            linear-gradient(to right, hsl(var(--border) / 0.9) 1px, transparent 1px),
+            linear-gradient(to bottom, hsl(var(--border) / 0.9) 1px, transparent 1px)
+          `,
+          backgroundSize: '64px 64px',
+          maskImage: 'radial-gradient(ellipse 58% 55% at 50% 48%, transparent 0%, transparent 58%, black 88%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 58% 55% at 50% 48%, transparent 0%, transparent 58%, black 88%)',
+        }} />
+        <div className="absolute top-0 left-0 right-0 h-[580px] pointer-events-none" style={{
+          background: `linear-gradient(to bottom, transparent 65%, hsl(var(--background)) 100%)`
+        }} />
 
-          <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-6">Contact</p>
+            <h1 className="text-4xl md:text-6xl font-extrabold text-foreground mb-6">
+              Get in touch
+            </h1>
+            <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto">
+              Have a question or want to discuss working together? We'd like to hear from you.
+            </p>
+          </motion.div>
+
+          {}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="mt-10 md:mt-14 grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 max-w-2xl mx-auto"
+          >
+            {[
+              {
+                end: happyClients,
+                format: (n: number) => `${Math.round(n)}+`,
+                label: "Happy clients",
+              },
+              {
+                end: 3,
+                format: (n: number) => `$${Math.round(n)}`,
+                label: "Average lead price",
+              },
+              {
+                end: leadsCount,
+                format: (n: number) => {
+                  const r = Math.round(n);
+                  return r >= 1000 ? `${(r / 1000).toFixed(1).replace(/\.0$/, "")}K` : `${r}`;
+                },
+                label: "Leads generated",
+              },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center bg-card border border-border rounded-2xl p-6">
+                <p className="text-2xl md:text-3xl font-extrabold text-foreground">
+                  <CountUpNumber end={stat.end} format={stat.format} />
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {}
+      <section id="contact-form" className="py-14 md:py-20 bg-muted/50 border-t border-border">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="text-center max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
             >
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-6">Contact</p>
-              <h1 className="text-4xl md:text-6xl font-extrabold text-foreground mb-6">
-                Get in touch
-              </h1>
-              <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto">
-                Have a question or want to discuss working together? We'd like to hear from you.
-              </p>
+              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Message us</p>
+              <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
+              <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
+              
+              {/* Typeform Embed */}
+              <div className="typeform-embed-wrapper">
+                <iframe
+                  id="typeform-full"
+                  width="100%"
+                  height="500"
+                  frameBorder="0"
+                  allow="camera; microphone; clipboard-write"
+                  src="https://form.typeform.com/to/sqMOxRdR"
+                  style={{ borderRadius: '8px' }}
+                />
+              </div>
+              <script src="https://embed.typeform.com/embed.js"></script>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="mt-10 md:mt-14 grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 max-w-2xl mx-auto"
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="space-y-8"
             >
-              {[
-                {
-                  end: happyClients,
-                  format: (n: number) => `${Math.round(n)}+`,
-                  label: "Happy clients",
-                },
-                {
-                  end: 3,
-                  format: (n: number) => `$${Math.round(n)}`,
-                  label: "Average lead price",
-                },
-                {
-                  end: leadsCount,
-                  format: (n: number) => {
-                    const r = Math.round(n);
-                    return r >= 1000 ? `${(r / 1000).toFixed(1).replace(/\.0$/, "")}K` : `${r}`;
-                  },
-                  label: "Leads generated",
-                },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center bg-card border border-border rounded-2xl p-6">
-                  <p className="text-2xl md:text-3xl font-extrabold text-foreground">
-                    <CountUpNumber end={stat.end} format={stat.format} />
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+              <div>
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Contact info</p>
+                <h2 className="text-2xl font-extrabold text-foreground mb-2">Contact Information</h2>
+                <p className="text-muted-foreground">Prefer to reach out directly? Here's how.</p>
+              </div>
+              <div className="space-y-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
+                    <Mail className="w-5 h-5 text-purple-deep" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground text-sm">Email</p>
+                    <p className="text-muted-foreground text-sm">laminey2059@gmail.com</p>
+                  </div>
                 </div>
-              ))}
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
+                    <Phone className="w-5 h-5 text-purple-deep" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground text-sm">Phone</p>
+                    <p className="text-muted-foreground text-sm">+45 12 34 56 78</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
+                    <MapPin className="w-5 h-5 text-purple-deep" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground text-sm">Office</p>
+                    <p className="text-muted-foreground text-sm">Denmark, DK</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-card border border-border rounded-2xl p-6">
+                <p className="text-sm text-foreground font-semibold mb-1">Estimated response time</p>
+                <p className="text-sm text-muted-foreground">We respond within 24 hours on business days. It can be longer if our client list is long.</p>
+              </div>
             </motion.div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="contact-form" className="py-14 md:py-20 bg-muted/50 border-t border-border">
-          <div className="container mx-auto px-4 max-w-5xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Message us</p>
-                <h2 className="text-2xl font-extrabold text-foreground mb-2">Send us a message</h2>
-                <p className="text-muted-foreground mb-8">Fill this out and we'll respond within one business day.</p>
-                
-                {/* Typeform Embed */}
-                <div
-                  data-tf-live="https://form.typeform.com/to/sqMOxRdR"
-                  style={{ width: '100%', height: '500px' }}
-                />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="space-y-8"
-              >
-                <div>
-                  <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">Contact info</p>
-                  <h2 className="text-2xl font-extrabold text-foreground mb-2">Contact Information</h2>
-                  <p className="text-muted-foreground">Prefer to reach out directly? Here's how.</p>
-                </div>
-                <div className="space-y-5">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
-                      <Mail className="w-5 h-5 text-purple-deep" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground text-sm">Email</p>
-                      <p className="text-muted-foreground text-sm">laminey2059@gmail.com</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
-                      <Phone className="w-5 h-5 text-purple-deep" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground text-sm">Phone</p>
-                      <p className="text-muted-foreground text-sm">+45 12 34 56 78</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-purple-light flex items-center justify-center shrink-0">
-                      <MapPin className="w-5 h-5 text-purple-deep" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground text-sm">Office</p>
-                      <p className="text-muted-foreground text-sm">Denmark, DK</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-card border border-border rounded-2xl p-6">
-                  <p className="text-sm text-foreground font-semibold mb-1">Estimated response time</p>
-                  <p className="text-sm text-muted-foreground">We respond within 24 hours on business days. It can be longer if our client list is long.</p>
-                </div>
-              </motion.div>
-            </div>
+      {}
+      <section className="py-14 md:py-20 border-t border-border">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">FAQ</p>
+              <h2 className="text-3xl font-extrabold text-foreground mb-4">Frequently asked questions</h2>
+              <p className="text-muted-foreground">Common questions from people thinking about working with us.</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              <Accordion type="single" collapsible className="w-full">
+                {faqs.map((faq, i) => (
+                  <AccordionItem key={i} value={`faq-${i}`} className="border-border">
+                    <AccordionTrigger className="text-left text-foreground font-semibold hover:no-underline hover:text-purple-deep data-[state=open]:text-purple-deep transition-colors">
+                      {faq.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      {faq.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </motion.div>
           </div>
-        </section>
-
-        <section className="py-14 md:py-20 border-t border-border">
-          <div className="container mx-auto px-4 max-w-5xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-purple-600 mb-4">FAQ</p>
-                <h2 className="text-3xl font-extrabold text-foreground mb-4">Frequently asked questions</h2>
-                <p className="text-muted-foreground">Common questions from people thinking about working with us.</p>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-              >
-                <Accordion type="single" collapsible className="w-full">
-                  {faqs.map((faq, i) => (
-                    <AccordionItem key={i} value={`faq-${i}`} className="border-border">
-                      <AccordionTrigger className="text-left text-foreground font-semibold hover:no-underline hover:text-purple-deep data-[state=open]:text-purple-deep transition-colors">
-                        {faq.q}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground">
-                        {faq.a}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </motion.div>
-            </div>
-          </div>
-        </section>
+        </div>
+      </section>
 
       </main>
       <Footer />
