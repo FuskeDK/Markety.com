@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
-const ADMIN_PASSWORD = "markety2024";
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD as string | undefined;
 
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -187,12 +187,12 @@ export default function Admin() {
             type="password"
             value={pw}
             onChange={(e) => setPw(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter" && pw === ADMIN_PASSWORD) setAuthed(true); }}
+            onKeyDown={(e) => { if (e.key === "Enter" && ADMIN_PASSWORD && pw === ADMIN_PASSWORD) setAuthed(true); }}
             placeholder="Password"
             className="border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-900"
           />
           <Button
-            onClick={() => { if (pw === ADMIN_PASSWORD) setAuthed(true); else toast({ title: "Wrong password", variant: "destructive" }); }}
+            onClick={() => { if (ADMIN_PASSWORD && pw === ADMIN_PASSWORD) setAuthed(true); else toast({ title: "Wrong password", variant: "destructive" }); }}
             className="bg-gray-900 hover:bg-gray-700 text-white"
           >
             Enter
