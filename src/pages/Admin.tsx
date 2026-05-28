@@ -6,7 +6,19 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD as string | undefined;
+async function verifyPassword(password: string): Promise<boolean> {
+  try {
+    const res = await fetch("/api/verify-admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    const data = await res.json();
+    return data.valid === true;
+  } catch {
+    return false;
+  }
+}
 
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -130,6 +142,7 @@ function ContentCard({
 export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [pw, setPw] = useState("");
+  const [checking, setChecking] = useState(false);
   const [items, setItems] = useState<ContentApproval[]>([]);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -187,15 +200,29 @@ export default function Admin() {
             type="password"
             value={pw}
             onChange={(e) => setPw(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter" && ADMIN_PASSWORD && pw === ADMIN_PASSWORD) setAuthed(true); }}
+            onKeyDown={async (e) => {
+              if (e.key !== "Enter" || checking) return;
+              setChecking(true);
+              const ok = await verifyPassword(pw);
+              setChecking(false);
+              if (ok) setAuthed(true);
+              else toast({ title: "Wrong password", variant: "destructive" });
+            }}
             placeholder="Password"
             className="border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-900"
           />
           <Button
-            onClick={() => { if (ADMIN_PASSWORD && pw === ADMIN_PASSWORD) setAuthed(true); else toast({ title: "Wrong password", variant: "destructive" }); }}
+            disabled={checking}
+            onClick={async () => {
+              setChecking(true);
+              const ok = await verifyPassword(pw);
+              setChecking(false);
+              if (ok) setAuthed(true);
+              else toast({ title: "Wrong password", variant: "destructive" });
+            }}
             className="bg-gray-900 hover:bg-gray-700 text-white"
           >
-            Enter
+            {checking ? "Checking..." : "Enter"}
           </Button>
         </div>
       </div>
