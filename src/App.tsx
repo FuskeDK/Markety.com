@@ -20,6 +20,7 @@ const CompanyInfoForm = lazy(() => import("./pages/CompanyInfoForm"));
 const Privacy  = lazy(() => import("./pages/Privacy"));
 const Terms    = lazy(() => import("./pages/Terms"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Admin    = lazy(() => import("./pages/Admin"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,7 +37,7 @@ queryClient.prefetchQuery(leadsCountQueryConfig);
 const AnimatedRoutes = () => {
   const location = useLocation();
 
-  useEffect(() => {
+  useEffect(() => {
     initializeSEOOptimizations();
   }, []);
 
@@ -58,6 +59,7 @@ const AnimatedRoutes = () => {
             <Route path="/company-info/:token" element={<CompanyInfoForm />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms"   element={<Terms />} />
+            <Route path="/admin"   element={<Admin />} />
             <Route path="*"        element={<NotFound />} />
           </Routes>
         </Suspense>
